@@ -36,6 +36,10 @@ app.use(function (req, res, next) {
   res.status(404).render('404', { missingUrl: req.originalUrl });
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
+}
+
+module.exports = app;
