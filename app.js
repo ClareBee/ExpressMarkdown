@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const { readFileSync } = require('fs');
 const port = 3000;
 const { getRoutes, recursiveRoutes } = require('./services/routegenerator');
 const htmlGenerator = require('./services/htmlgenerator');
@@ -7,7 +8,6 @@ const htmlGenerator = require('./services/htmlgenerator');
 getRoutes(__dirname + '/content');
 const folders = recursiveRoutes('./content');
 
-const content = htmlGenerator('# hello, markdown!');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(express.static('/public/'));
@@ -17,8 +17,14 @@ app.get('/', (req, res) => {
 });
 
 folders.forEach((route) => {
+  let content;
+  try {
+    content = readFileSync(__dirname + route + '/index.md', 'utf8');
+  } catch (e) {
+    console.log(error);
+  }
   app.get(`${route}`, function (req, res, next) {
-    res.render('template', { content: '<h1>Is this working?</h1>' });
+    res.render('template', { content: htmlGenerator(content) });
   });
 });
 
