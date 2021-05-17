@@ -1,14 +1,22 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const getRoutes = require('./services/routegenerator');
+const { getRoutes, recursiveRoutes } = require('./services/routegenerator');
 
 getRoutes(__dirname + '/content');
+const folders = recursiveRoutes('./content');
+console.log(folders);
 
 app.use(express.static('/public/'));
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
+});
+
+folders.forEach((route) => {
+  app.get(`${route}`, function (req, res, next) {
+    res.send('template');
+  });
 });
 
 app.get('/example', function (req, res) {
