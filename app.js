@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const { readFileSync } = require('fs');
 const port = 3000;
 const { getRoutes, recursiveRoutes } = require('./services/routegenerator');
@@ -10,7 +11,7 @@ const folders = recursiveRoutes('./content');
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(express.static('/public/'));
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/', (_req, res) => {
   res.render('template', { content: '<h1>Acme Co CMS</h1>' });
