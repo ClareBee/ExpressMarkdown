@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const getRoutes = require('./services/routegenerator');
+
+getRoutes(__dirname + '/content');
 
 app.use(express.static('/public/'));
 
