@@ -2,11 +2,14 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const { getRoutes, recursiveRoutes } = require('./services/routegenerator');
+const htmlGenerator = require('./services/htmlgenerator');
 
 getRoutes(__dirname + '/content');
 const folders = recursiveRoutes('./content');
-console.log(folders);
 
+const content = htmlGenerator('# hello, markdown!');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 app.use(express.static('/public/'));
 
 app.get('/', (req, res) => {
@@ -15,7 +18,7 @@ app.get('/', (req, res) => {
 
 folders.forEach((route) => {
   app.get(`${route}`, function (req, res, next) {
-    res.send('template');
+    res.render('template', { content: '<h1>Is this working?</h1>' });
   });
 });
 
