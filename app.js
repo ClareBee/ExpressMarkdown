@@ -5,34 +5,33 @@ const port = 3000;
 const { getRoutes, recursiveRoutes } = require('./services/routegenerator');
 const htmlGenerator = require('./services/htmlgenerator');
 
-getRoutes(__dirname + '/content');
+getRoutes(__dirname + '/content/');
 const folders = recursiveRoutes('./content');
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(express.static('/public/'));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get('/', (_req, res) => {
+  res.render('template', { content: '<h1>Acme Co CMS</h1>' });
 });
 
 folders.forEach((route) => {
   let content;
   try {
-    content = readFileSync(__dirname + route + '/index.md', 'utf8');
-  } catch (e) {
+    content = readFileSync(
+      __dirname + '/content/' + route + '/index.md',
+      'utf8'
+    );
+  } catch (error) {
     console.log(error);
   }
-  app.get(`${route}`, function (req, res, next) {
+  app.get(`${route}`, function (_req, res) {
     res.render('template', { content: htmlGenerator(content) });
   });
 });
 
-app.get('/example', function (req, res) {
-  res.send('template');
-});
-
-app.use(function (req, res, next) {
+app.use(function (req, res) {
   res.status(404).render('404', { missingUrl: req.originalUrl });
 });
 

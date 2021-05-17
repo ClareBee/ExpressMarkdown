@@ -16,7 +16,7 @@ const recursiveRoutes = (srcPath, dirs) => {
     if (fs.lstatSync(srcPath + '/' + dirNext).isDirectory()) {
       folder = recursiveRoutes(`${srcPath}/${dirNext}`, folder);
     } else {
-      folder.push(srcPath.substring(1));
+      folder.push(srcPath.substring(9));
     }
   });
   return folder.filter((dir) => !!dir);
