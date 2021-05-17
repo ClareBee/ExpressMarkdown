@@ -12,7 +12,10 @@ describe('Page content', () => {
     for (let route = 0; route < routes.length; route++) {
       const res = await request(app).get(routes[route]);
       expect(res.type).toEqual('text/html');
-      const markdown = readFileSync('.' + routes[route] + '/index.md', 'utf8');
+      const markdown = readFileSync(
+        './content/' + routes[route] + '/index.md',
+        'utf8'
+      );
       expect(turndownService.turndown(res.text)).toContain(
         markdown.split('\n')[1]
       );
