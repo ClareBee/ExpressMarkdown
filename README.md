@@ -11,6 +11,7 @@ App will start on localhost:3000
 ## Ideas for extension
 
 - Deploy e.g. to Vercel/Heroku
+- Refactor to use non-blocking methods
 - Content pages for directories with links to pages
 - Improved UI
 - User input/edit functionality!
