@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const path = require('path');
 const { readFileSync } = require('fs');
 const port = 3000;
@@ -7,6 +6,8 @@ const { recursiveRoutes } = require('./services/routegenerator');
 const htmlGenerator = require('./services/htmlgenerator');
 
 const folders = recursiveRoutes('./content');
+
+const app = express();
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
