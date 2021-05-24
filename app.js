@@ -4,6 +4,7 @@ const { readFileSync } = require('fs');
 const port = 3000;
 const { recursiveRoutes } = require('./services/routegenerator');
 const htmlGenerator = require('./services/htmlgenerator');
+const getLinks = require('./utils/links');
 
 const folders = recursiveRoutes('./content');
 
@@ -14,7 +15,9 @@ app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/', (_req, res) => {
-  res.render('template', { content: '<h1>Acme Co CMS</h1>' });
+  res.render('template', {
+    content: `<h1>Acme Co CMS</h1><ul>${getLinks()}</ul>`,
+  });
 });
 
 folders.forEach((route) => {
